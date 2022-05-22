@@ -1,8 +1,21 @@
-#ifndef EXAMPLE_H
-#define EXAMPLE_H
+//
+//  react-native-env-js.hpp
+//  Pods
+//
+//  Created by at on 22.05.2022.
+//
 
-namespace example {
-  int multiply(float a, float b);
-}
+#include <jsi/jsilib.h>
+#include <jsi/jsi.h>
 
-#endif /* EXAMPLE_H */
+#ifndef react_native_env_js_h
+#define react_native_env_js_h
+
+#include <stdio.h>
+
+using namespace facebook;
+
+void installSequel(jsi::Runtime &rt);
+void cleanUpSequel();
+
+#endif /* react_native_env_js_h */
