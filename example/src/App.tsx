@@ -7,7 +7,7 @@ export default function App() {
   const [envVariable, setEnvVariable] = React.useState<string | null>();
 
   React.useEffect(() => {
-    setEnvVariable(getEnvironmentVariable('some'));
+    setEnvVariable(getEnvironmentVariable('HOME'));
   }, []);
 
   return (

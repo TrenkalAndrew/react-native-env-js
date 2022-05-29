@@ -40,8 +40,12 @@ using namespace facebook;
        jsi::PropNameID::forAscii(rt, "getEnvironmentVariable"),
        1,
        move(getEnvironmentVariableLambda));
+    
+    jsi::Object object = jsi::Object(rt);
+    
+    object.setProperty(rt, jsi::PropNameID::forAscii(rt, "getEnvironmentVariable"), move(getEnvironmentVariable));
 
-    rt.global().setProperty(rt, "getEnvironmentVariable", move(getEnvironmentVariable));
+    rt.global().setProperty(rt, "RNEnvJs", move(object));
 }
 
 @end
