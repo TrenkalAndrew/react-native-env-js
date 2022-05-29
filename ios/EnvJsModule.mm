@@ -1,12 +1,12 @@
-#import "EnvJs.h"
-#import "react-native-env-js.h"
+#import "EnvJsModule.h"
 
 #import <React/RCTBridge+Private.h>
 #import <jsi/jsi.h>
 
 #import <React/RCTUtils.h>
+#import "EnvJsHostObject.h"
 
-@implementation EnvJs 
+@implementation EnvJsModule
 
 @synthesize bridge = _bridge;
 @synthesize methodQueue = _methodQueue;
@@ -25,9 +25,8 @@ RCT_EXPORT_MODULE()
   if (!cxxBridge.runtime) {
     return;
   }
-
-
-  installSequel(*(facebook::jsi::Runtime *)cxxBridge.runtime);
+    
+  [EnvJsHostObject install:*(facebook::jsi::Runtime *)cxxBridge.runtime];
 }
 
 @end

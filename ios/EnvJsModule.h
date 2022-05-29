@@ -1,6 +1,6 @@
 #import <React/RCTBridgeModule.h>
 
-@interface EnvJs : NSObject <RCTBridgeModule>
+@interface EnvJsModule : NSObject <RCTBridgeModule>
 
 @property(nonatomic, assign) BOOL setBridgeOnMainQueue;
 
