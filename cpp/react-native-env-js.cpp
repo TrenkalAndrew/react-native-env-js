@@ -5,23 +5,21 @@ using namespace facebook;
 using namespace std;
 
 void installSequel(jsi::Runtime &rt) {
-    cout << "Installing JSI binding" << endl;
+    auto getEnvironmentVariableLambda = [](jsi::Runtime &rt,
+                                           const jsi::Value & thisValue,
+                                           const jsi::Value *args,
+                                           size_t count) -> jsi::Value {
+                                               return jsi::Value(42);
+        
+    };
     
-    jsi::Function multiply = jsi::Function::createFromHostFunction(
+    jsi::Function getEnvironmentVariable = jsi::Function::createFromHostFunction(
        rt,
-       jsi::PropNameID::forAscii(rt, "multiply"),
+       jsi::PropNameID::forAscii(rt, "getEnvironmentVariable"),
        0,
-       [](jsi::Runtime &rt,
-          const jsi::Value & thisValue,
-          const jsi::Value *args,
-          size_t count) -> jsi::Value {
-              return jsi::Value(42);
-          }
-       );
+       move(getEnvironmentVariableLambda));
     
-    rt.global().setProperty(rt, "multiply", multiply);
+    rt.global().setProperty(rt, "getEnvironmentVariable", move(getEnvironmentVariable));
 }
 
-void cleanUpSequel() {
-    
-}
+void cleanUpSequel() {}

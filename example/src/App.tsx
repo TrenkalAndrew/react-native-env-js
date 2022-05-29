@@ -1,18 +1,18 @@
 import * as React from 'react';
 
 import { StyleSheet, View, Text } from 'react-native';
-import { multiply } from 'react-native-env-js';
+import { getEnvironmentVariable } from 'react-native-env-js';
 
 export default function App() {
-  const [result, setResult] = React.useState<number | undefined>();
+  const [envVariable, setEnvVariable] = React.useState<string | null>();
 
   React.useEffect(() => {
-    multiply(3, 7).then(setResult);
+    setEnvVariable(getEnvironmentVariable('some'));
   }, []);
 
   return (
     <View style={styles.container}>
-      <Text>Result: {result}</Text>
+      <Text>Result: {envVariable}</Text>
     </View>
   );
 }
