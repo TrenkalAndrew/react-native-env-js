@@ -1,11 +1,12 @@
 package com.reactnativeenvjs;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 
-import com.facebook.react.bridge.Promise;
+import com.facebook.react.bridge.JavaScriptContextHolder;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
-import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.module.annotations.ReactModule;
 
 @ReactModule(name = EnvJsModule.NAME)
@@ -30,12 +31,16 @@ public class EnvJsModule extends ReactContextBaseJavaModule {
         }
     }
 
-    // Example method
-    // See https://reactnative.dev/docs/native-modules-android
-    @ReactMethod
-    public void multiply(int a, int b, Promise promise) {
-        promise.resolve(nativeMultiply(a, b));
-    }
+    private native void nativeInstall(long jsi);
 
-    public static native int nativeMultiply(int a, int b);
+    public void installLib(JavaScriptContextHolder reactContext) {
+
+      if (reactContext.get() != 0) {
+        this.nativeInstall(
+          reactContext.get()
+        );
+      } else {
+        Log.e("EnvJsModule", "JSI Runtime is not available in debug mode");
+      }
+    }
 }

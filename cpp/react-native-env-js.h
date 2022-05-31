@@ -11,8 +11,6 @@
 #ifndef react_native_env_js_h
 #define react_native_env_js_h
 
-#include <stdio.h>
-
 using namespace facebook;
 
 void installSequel(jsi::Runtime &rt);
