@@ -7,11 +7,12 @@ import androidx.annotation.NonNull;
 import com.facebook.react.bridge.JavaScriptContextHolder;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.bridge.ReactContextBaseJavaModule;
+import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.module.annotations.ReactModule;
 
 @ReactModule(name = EnvJsModule.NAME)
 public class EnvJsModule extends ReactContextBaseJavaModule {
-    public static final String NAME = "EnvJs";
+    public static final String NAME = "EnvJsModule";
 
     public EnvJsModule(ReactApplicationContext reactContext) {
         super(reactContext);
@@ -33,14 +34,15 @@ public class EnvJsModule extends ReactContextBaseJavaModule {
 
     private native void nativeInstall(long jsi);
 
-    public void installLib(JavaScriptContextHolder reactContext) {
-
-      if (reactContext.get() != 0) {
-        this.nativeInstall(
-          reactContext.get()
-        );
-      } else {
-        Log.e("EnvJsModule", "JSI Runtime is not available in debug mode");
-      }
+  @ReactMethod(isBlockingSynchronousMethod = true)
+  public boolean install() {
+    try {
+      JavaScriptContextHolder jsContext = getReactApplicationContext().getJavaScriptContextHolder();
+      nativeInstall(jsContext.get());
+      return true;
+    } catch (Exception exception) {
+      Log.e(NAME, "Failed to install EnvJS JSI Bindings!", exception);
+      return false;
     }
+  }
 }
