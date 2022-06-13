@@ -28,9 +28,10 @@ android {
 
         externalNativeBuild {
             cmake {
-                cppFlags "-O2 -frtti -fexceptions -Wall -fstack-protector-all"
+                cppFlags "-O2 -frtti -fexceptions -Wall -fstack-protector-all", "-std=c++1y"
                 abiFilters 'x86', 'x86_64', 'armeabi-v7a', 'arm64-v8a'
                 version "3.8.0+"
+                arguments '-DANDROID_STL=c++_shared'
             }
         }
 
@@ -54,6 +55,15 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
+    configurations {
+        extractHeaders
+        extractJNI
+    }
+
+    packagingOptions {
+         excludes = ["**/libc++_shared.so"]
+    }
 }
 
 repositories {
@@ -70,4 +80,43 @@ repositories {
 dependencies {
     //noinspection GradleDynamicVersion
     implementation "com.facebook.react:react-native:+"  // From node_modules
+
+    // implementation 'com.facebook.fbjni:fbjni:+'
+    // If headers are required.
+    extractHeaders 'com.facebook.fbjni:fbjni:+:headers'
+    // If the `.so` files are required for linking.
+    extractJNI 'com.facebook.fbjni:fbjni:+'
+}
+
+task extractAARHeaders {
+    doLast {
+        configurations.extractHeaders.files.each {
+            def file = it.absoluteFile
+            copy {
+                from zipTree(file)
+                into "$buildDir/$file.name"
+                include "**/*.h"
+            }
+        }
+    }
+}
+
+task extractJNIFiles {
+    doLast {
+        configurations.extractJNI.files.each {
+            def file = it.absoluteFile
+            copy {
+                from zipTree(file)
+                into "$buildDir/$file.name"
+                include "jni/**/*"
+            }
+        }
+    }
+}
+
+tasks.whenTaskAdded { task ->
+    if (task.name.contains('externalNativeBuild')) {
+        task.dependsOn(extractAARHeaders)
+        task.dependsOn(extractJNIFiles)
+    }
 }
