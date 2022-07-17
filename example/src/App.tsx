@@ -1,13 +1,17 @@
 import * as React from 'react';
 
-import { StyleSheet, View, Text } from 'react-native';
+import { StyleSheet, View, Text, Platform } from 'react-native';
 import { getEnvironmentVariable } from 'react-native-env-js';
 
 export default function App() {
   const [envVariable, setEnvVariable] = React.useState<string | null>();
 
   React.useEffect(() => {
-    setEnvVariable(getEnvironmentVariable('HOME'));
+    setEnvVariable(
+      getEnvironmentVariable(
+        Platform.select({ ios: 'HOME', default: 'ANDROID_BOOTLOGO' })
+      )
+    );
   }, []);
 
   return (

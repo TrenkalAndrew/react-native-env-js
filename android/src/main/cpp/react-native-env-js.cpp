@@ -1,8 +1,10 @@
 #include "react-native-env-js.h"
 #include <jsi/jsi.h>
+#include "java-bindings/JEnvJs.h"
 
 using namespace facebook;
 using namespace std;
+using namespace envjs;
 
 void installSequel(jsi::Runtime &rt)
 {
@@ -11,7 +13,23 @@ void installSequel(jsi::Runtime &rt)
                                            const jsi::Value *args,
                                            size_t count) -> jsi::Value
     {
-        return jsi::Value(42);
+        if (count < 1) {
+            jsi::detail::throwJSError(rt, "[react-native-env-js]: environment variable name is not defined.");
+        }
+
+        if (!args[0].isString()) {
+            jsi::detail::throwJSError(rt, "[react-native-env-js]: environment variable name should be string.");
+        }
+
+        auto environmentVariableName = args[0].getString(rt);
+
+        auto environmentVariable = JEnvJs::getEnvironmentVariable(environmentVariableName.utf8(rt));
+
+        if (environmentVariable.empty()) {
+            return nullptr;
+        }
+
+        return jsi::String::createFromUtf8(rt, environmentVariable);
     };
 
     jsi::Function getEnvironmentVariable = jsi::Function::createFromHostFunction(
