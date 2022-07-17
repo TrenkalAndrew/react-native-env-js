@@ -1,19 +1,43 @@
 cmake_minimum_required(VERSION 3.4.1)
 
 set (CMAKE_VERBOSE_MAKEFILE ON)
-set (CMAKE_CXX_STANDARD 11)
+set (CMAKE_CXX_STANDARD 14)
+set (PACKAGE_NAME "EnvJs")
 
-add_library(cpp
+set(build_DIR ${CMAKE_SOURCE_DIR}/build)
+
+file(GLOB libfbjni_link_DIRS "${build_DIR}/fbjni*.aar/jni/${ANDROID_ABI}")
+file(GLOB libfbjni_include_DIRS "${build_DIR}/fbjni-*-headers.jar/")
+
+find_library(FBJNI_LIBRARY fbjni PATHS ${libfbjni_link_DIRS} NO_CMAKE_FIND_ROOT_PATH)
+
+add_library(
+            ${PACKAGE_NAME}
             SHARED
-            ../cpp/react-native-env-js.cpp
+            src/main/cpp/react-native-env-js.cpp
             cpp-adapter.cpp
             ../node_modules/react-native/ReactCommon/jsi/jsi/jsi.cpp
+            src/main/cpp/java-bindings/JEnvJs.cpp
 )
 
 # Specifies a path to native header files.
 include_directories(
-            ../cpp
+            src/main/cpp
             ../node_modules/react-native/React
             ../node_modules/react-native/React/Base
             ../node_modules/react-native/ReactCommon/jsi
+)
+
+target_include_directories(
+    ${PACKAGE_NAME} 
+    PRIVATE
+    ${libfbjni_include_DIRS}
+    ../node_modules/react-native/ReactAndroid/src/main/jni
+    ../node_modules/react-native/ReactAndroid/src/main/java/com/facebook/react/turbomodule/core/jni
+)
+
+target_link_libraries(
+    ${PACKAGE_NAME} 
+    ${FBJNI_LIBRARY} 
+    android
 )

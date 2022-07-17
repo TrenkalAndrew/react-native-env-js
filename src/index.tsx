@@ -1,4 +1,5 @@
 import { Platform } from 'react-native';
+import { NativeModules } from 'react-native';
 import type { TResult } from './types';
 
 const LINKING_ERROR =
@@ -10,7 +11,13 @@ const LINKING_ERROR =
 const RNEnvJs = global.RNEnvJs;
 
 if (!RNEnvJs) {
-  throw new Error(LINKING_ERROR);
+  const EnvJsModule = NativeModules.EnvJsModule;
+
+  if (!EnvJsModule) {
+    throw new Error(LINKING_ERROR);
+  }
+
+  EnvJsModule.install();
 }
 
 export function getEnvironmentVariable(variableName: string): TResult {
