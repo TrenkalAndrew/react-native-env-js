@@ -1,6 +1,6 @@
 {
   "name": "react-native-env-js",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "library for getting native env variables on js side",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
