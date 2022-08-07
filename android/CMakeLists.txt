@@ -16,24 +16,24 @@ add_library(
             SHARED
             src/main/cpp/react-native-env-js.cpp
             cpp-adapter.cpp
-            ../node_modules/react-native/ReactCommon/jsi/jsi/jsi.cpp
+            "${NODE_MODULES_DIR}/react-native/ReactCommon/jsi/jsi/jsi.cpp"
             src/main/cpp/java-bindings/JEnvJs.cpp
 )
 
 # Specifies a path to native header files.
 include_directories(
             src/main/cpp
-            ../node_modules/react-native/React
-            ../node_modules/react-native/React/Base
-            ../node_modules/react-native/ReactCommon/jsi
+            "${NODE_MODULES_DIR}/react-native/React"
+            "${NODE_MODULES_DIR}/react-native/React/Base"
+            "${NODE_MODULES_DIR}/react-native/ReactCommon/jsi"
 )
 
 target_include_directories(
     ${PACKAGE_NAME} 
     PRIVATE
     ${libfbjni_include_DIRS}
-    ../node_modules/react-native/ReactAndroid/src/main/jni
-    ../node_modules/react-native/ReactAndroid/src/main/java/com/facebook/react/turbomodule/core/jni
+    "${NODE_MODULES_DIR}/react-native/ReactAndroid/src/main/jni"
+    "${NODE_MODULES_DIR}/react-native/ReactAndroid/src/main/java/com/facebook/react/turbomodule/core/jni"
 )
 
 target_link_libraries(
