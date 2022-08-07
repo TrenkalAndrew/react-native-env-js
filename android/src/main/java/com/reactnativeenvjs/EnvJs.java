@@ -13,6 +13,5 @@ public class EnvJs {
       Log.e("EnvJsModule", e.getLocalizedMessage());
       return null;
     }
-
   }
 }

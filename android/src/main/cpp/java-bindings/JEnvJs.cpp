@@ -1,8 +1,9 @@
 #include "JEnvJs.h"
-#include <fbjni/fbjni.h>
 
 #include <string>
 #include <android/log.h>
+
+#include <fbjni/fbjni.h>
 
 
 namespace envjs {

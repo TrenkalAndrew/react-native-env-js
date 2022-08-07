@@ -6,7 +6,6 @@ import com.facebook.react.bridge.JavaScriptContextHolder;
 import com.facebook.react.bridge.ReactApplicationContext;
 import java.util.Collections;
 import java.util.List;
-import android.util.Log;
 
 public class EnvJsPackage implements JSIModulePackage {
   @Override

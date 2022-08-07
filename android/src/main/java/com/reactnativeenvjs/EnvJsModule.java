@@ -12,11 +12,13 @@ import com.facebook.react.module.annotations.ReactModule;
 @ReactModule(name = EnvJsModule.NAME)
 public class EnvJsModule extends ReactContextBaseJavaModule {
   public static final String NAME = "EnvJsModule";
+  private static final String TAG = "EnvJsModuleRuntime";
 
   static {
     try {
       System.loadLibrary("EnvJs");
     } catch (Exception ignored) {
+      Log.e(TAG, "Failed to load EnvJsModule!");
     }
   }
 
@@ -33,7 +35,6 @@ public class EnvJsModule extends ReactContextBaseJavaModule {
   private native void nativeInstall(long jsi);
 
   public void installLib(JavaScriptContextHolder reactContext) {
-
     if (reactContext.get() != 0) {
       this.nativeInstall(
         reactContext.get()
