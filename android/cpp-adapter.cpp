@@ -1,6 +1,5 @@
 #include <jni.h>
 #include <jsi/jsi.h>
-
 #include "react-native-env-js.h"
 
 extern "C"
